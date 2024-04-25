@@ -17,7 +17,6 @@ sentry_sdk.init(
             event_level=logging.ERROR,
         )
     ],
-    include_local_variables=True,
 )
 
 foo = 1
