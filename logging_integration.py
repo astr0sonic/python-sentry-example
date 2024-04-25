@@ -17,6 +17,7 @@ sentry_sdk.init(
             event_level=logging.ERROR,
         )
     ],
+    include_local_variables=True,
 )
 
 foo = 1
@@ -25,7 +26,7 @@ bar = 0
 try:
     baz = foo / bar
 except ZeroDivisionError:
-    logging.exception("zero division", extra={"foo": foo, "bar": bar})
     baz = 0
+    logging.exception("zero division", extra={"foo": foo, "bar": bar})
 
 print(baz)

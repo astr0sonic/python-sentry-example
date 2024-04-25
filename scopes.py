@@ -1,26 +1,20 @@
 import os
 
 import sentry_sdk
+import sentry_sdk.scope
 from dotenv import load_dotenv
 
 load_dotenv()
 dsn = os.getenv("SENTRY_DSN")
 sentry_sdk.init(dsn=dsn)
-print(sentry_sdk.Hub.current._stack)
 
-with sentry_sdk.configure_scope() as scope:
-    print(sentry_sdk.Hub.current._stack)
-    scope.set_tag("scope1", "configure_scope")
-    sentry_sdk.capture_message("before_configure_scope")  # scope1:configure_scope
+scope = sentry_sdk.scope.Scope.get_current_scope()
+scope.set_tag("scope1", "scope1")
+sentry_sdk.capture_message("message1")  # scope1:scope1
 
-with sentry_sdk.push_scope() as scope:
-    print(sentry_sdk.Hub.current._stack)
-    scope.set_tag("scope2", "push_scope")
-    sentry_sdk.capture_message("push_scope")  # scope1:configure_scope scope2:push_scope
+with sentry_sdk.new_scope() as scope:
+    scope.set_tag("scope2", "scope2")
+    sentry_sdk.capture_message("message2")  # scope1:scope1 scope2:scope2
 
-with sentry_sdk.configure_scope() as scope:
-    print(sentry_sdk.Hub.current._stack)
-    scope.set_tag("scope3", "configure_scope")
-    sentry_sdk.capture_message(
-        "after_configure_scope"
-    )  # scope1:configure_scope scope3:configure_scope
+scope.set_tag("scope3", "scope3")
+sentry_sdk.capture_message("message3")  # scope1:scope1 scope3:scope3
