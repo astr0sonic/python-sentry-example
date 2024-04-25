@@ -10,14 +10,16 @@ from sentry_sdk.types import Event, Hint
 def filter_sensitive_data(event: Event, hint: Hint) -> Event | None:
     print(event)
     print(hint)
+    # ...
     return event
 
 
 def filter_sensitive_breadcrumb_data(
     crumb: Dict[str, Any], hint: Dict[str, Any]
-) -> dict[str, Any] | None:
+) -> Dict[str, Any] | None:
     print(crumb)
     print(hint)
+    # ...
     return crumb
 
 
